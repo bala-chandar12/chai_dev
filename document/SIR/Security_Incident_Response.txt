@@ -1,0 +1,148 @@
+Security Incident Response
+The ServiceNow® Security Incident Response application tracks the progress of security incidents from discovery and initial analysis, through containment, eradication, and recovery, and into the final post incident review, knowledge base article creation, and closure.
+Managing security incidents and inbound requests
+Create an inbound request
+Unlike security incidents, inbound requests are generally of a lower priority. Requests for a lookup, scan, or a new badge are examples of inbound requests.
+Before you begin
+Roles required: sn_si.basic role or higher
+Procedure
+Navigate to one of the Requests forms. 
+For example, All > Security Incident > Inbound Requests > Assigned to Me.
+Click New. 
+Fill in the fields on the form, as appropriate.
+ When you have completed your entries, click Submit. 
+ If you must escalate the request to a security incident, click Convert to Security Incident.
+Manage observables
+Observables are artifacts found on a network or operating system that are likely to indicate an intrusion. Typical observables are IP addresses, MD5 hashes of malware files or URLs, or domain names. Threat Intelligence observable table data is available from within a security incident.
+Observables information includes value, type, context, and timestamp.
+You can create or delete observables manually or automatically through lookup requests.
+A new Finding column has been added to the Threat Lookup Results tab. Possible values are: Malicious and Unknown.
+If an IoC lookup request does not find a security incident observable, it is labeled Unknown. 
+If an IoC lookup request does find a security incident observable, it is labeled Malicious. 
+During an upgrade, existing items have the Finding column set to Malicious.
+Note: While Threat Intelligence observables table data is part of a security incident, no other interaction with the Threat Intelligence module is included. For full threat functionality, the Threat Intelligence plugin is available by subscription.
+
+Manage lookups and scans
+You can perform lookups and vulnerability scans from security incidents and from the security incident catalog to identify potential threats and vulnerabilities.
+Manage on-demand orchestration
+During Security Incident Response analysis, a security analyst may want to perform a task that is driven by a security incident workflow. For example, run a process dump on a particular CI. This can be accomplished with on-demand orchestration.
+Each registered Security Operations application includes several on-demand orchestrations in the base system. You can define , as needed.
+On-demand orchestration can be invoked from a choice list at the bottom of the following lists and forms in Security Incident Response:
+Security Incident form
+Security Incident list
+Security Incident Observables related list
+Configuration Items related list
+Note: 
+A property in Security Support Common called sn_sec_cmn.use_on_demand_tbl_as_allowed defines which workflows are available for on-demand execution.
+If the property is set to true, only workflows specified in the On Demand Orchestration [sn_sec_cmn_on_demand_orchestration] table are available.
+If the property is set to false (default), all workflows for applications configured in the  are available.
+Depending on the setting of the property, the list of workflows available is tailored to the type of information being analyzed
+Calculate the severity of a security incident
+You can calculate the severity of a security incident using predefined calculators.
+Before you begin
+Role required: sn_si.basic
+Procedure
+If it is not already open, open the security incident you want to calculate the severity for. 
+Click the form header context menu and select Calculate Severity: 
+
+[Context for the diagram/image above: ]
+				Fig 1. Calculate Severity
+The severity is calculated based on the predefined rules for base calculators
+Manage post incident activities
+Based on the requirements of your business, a review of the origins and handling of security incidents is often needed.
+The Post Incident Review functionality in ServiceNow provides many tools for automating, tracking, auditing, and simplifying this process.
+This section describes the following:
+	Assign post incident review roles
+You can target questions to specific pre-defined groups by assigning roles to Post Incident Review (PIR) categories.
+Before you begin
+Role required: admin
+Procedure
+Navigate to All > Assessments > Metric Definition > Types.
+Under the Types column, search for a Post Incident Review record.
+Open the record.
+Assign one or more roles for this category of questions.
+
+[Context for the diagram/image above: ]
+			Fig 2 . Post Incident review
+Click Update.
+Navigate to User Administration > Users.
+Choose a user
+Add one or more metric type roles to the user record.
+Note: The roles must correspond to roles assigned in the Post Incident Review category.
+Configure an assessment trigger condition
+Define rule conditions and generate required and optional assessments for specific security incidents.
+Before you begin
+Role required: sn_si.admin
+Note: To use the Post Incident Review Assessment Trigger Conditions feature, you must upgrade to Security Incident Response 11.0. Before upgrading, you must revert any customizations done to the Post Incident Review Metric type and trigger conditions. In addition, you may also have to revert the customizations done to the business rules specific to the post incident review.
+Require assessments to be complete
+Store assignee
+Procedure
+Navigate to All > Security Incident > Administration > Post Incident Review - Assessments Setup. 
+In the Assessment Trigger Conditions Configure section, click Configure. 
+Note: On the Assessment Configurations form, and within the Assessments Configurations section, the Generate assessments check box is selected by default.
+When you select the check box, an optional assessment is created for every security incident.
+When you deselect the check box, the assessments are not generated. The assessment rules are not displayed and you cannot configure conditions for the security incidents.
+On the Assessment Configurations form, in the Conditions section, specify the required information. 
+In the Name field, specify the rule name. 
+In the Fulfilment field, specify the fulfilment type. 
+To configure a condition, click the rule record and define conditions in the Condition field. 
+Note: 
+If you create a rule without defining a condition in the Condition field, then the condition is evaluated as true and the rule is applicable for all security incidents.
+You can define a specific rule to make the assessments either mandatory or optional, and the assessments are not generated for the remaining security incidents, which don't match the defined rules.
+Trigger conditions 
+
+
+[Context for the diagram/image above: ]
+				Fig 3. Trigger conditions
+	Perform a questionnaire-based post incident review
+	You may decide that a post incident review of the security incident is warranted. A post incident review describes what happened, helps to determine why the incident occurred, and identifies how it can be avoided or handled in the future.
+Before you begin
+Role required: sn_si.admin, sn_si.manager, sn_si.analyst
+Note: Any user can participate in a post incident review questionnaire, regardless of role. Roles can be assigned to a review.
+About this task
+The ServiceNow Security Incident Response application can automate the collection of post incident review information from everyone involved with a security incident by using questionnaires. If you decide to use a questionnaire as part of a post incident review, a list of questions, relevant to the security incident, is sent to the user-defined list of participants. As each user completes the questionnaire, the post incident report is automatically generated. The report compiles all the information related to the security incident, as well as all responses to the post incident review.
+While an initial list of questions is provided with the base system, they are customizable. You can create categories and add new questions to them, or you can change individual questions within existing categories. You can ask questions based on roles. You can define when certain questions are asked. There can be questions you ask only for your UNIX servers, for example, or only when there is criminal activity. You can define questions that are asked depending on the answer to another question or on the value in a field on the form. There can even be questions that are filled in entirely by querying the database.
+After the security incident is resolved and moved to Review state, assessments are generated for all assigned users and users who are directly added from the Request assessments list.
+The questionnaire can be a helpful tool for gathering information about the handling of the security incident from various sources.
+During the review, you can add more users to the list or remove existing users from the list, unless they have already started filling out the questionnaire. If you add new users to the list, they receive the questions when the record is saved. The security incident cannot be closed until all questionnaires have been completed. As questionnaires are completed by each user, the post incident report is automatically generated (and regenerated) and displayed on the Post Incident Review tab.
+To start a post incident review:
+Procedure
+, or open an existing one by navigating to Security Incident > Incidents > Assigned to Me (or Assigned to Team or Unassigned Incidents). 
+Click the Post Incident Review tab. 
+The Request assessments field defaults to the individual in the Assigned to field. 
+Click the lock icon to add other users to the review list. After the field is unlocked, options are available for adding or removing multiple users, roles, or entering user email addresses.
+When you have completed your entries, click the lock icon to lock the field. 
+Note: You can also define conditions which, when met in a security incident, can cause specific users to be automatically added to the Request assessments field for that security incident. For example, when a security incident Category is changed to Phishing, specific individuals who have expertise in phishing threats can be added to the post incident review list. For more information, see .
+Click Update. 
+When the incident goes into the Review state (or immediately, if it is already in the Review state), each of the users in the review list receives an initial . Reminders are sent as the due date nears. When each user accesses the questionnaire from the email link or by going to Post Incident Review > My Pending Reviews, the questions shown are drawn from all categories that fit this security incident. If new users are added to the review list before the due date is reached, they are sent notifications when the security incident is saved.
+As users complete their questionnaires, the post incident report compiles the data and displays the report in the Post Incident Review tab. The questionnaire data is displayed in the Findings tab
+	Create PIR assignment rules
+	In addition to manually adding users post incident review assessment list for a security incident, you can define assignment rules for automatically adding users to the list.
+Before you begin
+Role required: sn_si.admin, sn_si.manager, sn_si.analyst
+Procedure
+Navigate to All > Security Incident > Administration > Post Incident Review - Assessments Setup. 
+Drill down to the User Assignment Rules section. 
+Click Configure. 
+Click New. 
+
+[Context for the diagram/image above: ]
+			Fig 4. Creating new Record for post Incident
+Fill in the fields, as needed. 
+Click Submit. 
+Example: Malicious code activity
+In the post incident review assignment rule shown here, when a security incident with the Category field set to Malicious code activity transitions to the Review state, the three users identified (who happen to be experts in dealing with malicious code activity) are added to the list of users who will receive the post incident review questionnaire for this security incident. Malicious code activity 
+[Context for the diagram/image above: In the post incident review assignment rule shown here, when a security incident with the Category field set to Malicious code activity transitions to the Review state, the three users identified (who happen to be experts in dealing with malicious code activity) are added to the list of users who will receive the post incident review questionnaire for this security incident. Malicious code activity ]
+			Fig 5. Assign Users 
+
+	Post incident review report
+	The final product of the post incident review is the post incident report. When closing the security incident, a PDF of the report is created and attached to the incident.
+The post incident report documents the actions performed, by whom, and the reasons for doing them. The post incident report compiles all the information related to the security incident, as well as all assessment responses, into a concise record of the security incident lifecycle. Even if a questionnaire was not used, the post incident report provides valuable data, including: 
+Initial incidents that caused the security incident
+Change requests, problems, and vulnerabilities created or linked to the security incident
+Descriptions on the security incident
+Activity logs with all work notes, response tasks, and activities
+[Optional] Audit log
+The following table describes the components of the security incident report and identifies where the information originated.
+
+
