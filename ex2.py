@@ -58,7 +58,7 @@ async def process_audio(fast_socket: web.WebSocketResponse):
                         start_index = transcript_lower.find(word)
                         print(transcript)
                         await predict(transcript[start_index:])
-                        time.sleep(3)
+                        
                 await fast_socket.send_str(transcript)
     deepgram_socket = await connect_to_deepgram(get_transcript)
 
@@ -80,7 +80,7 @@ async def process_audio2(fast_socket: web.WebSocketResponse):
                         start_index = transcript_lower.find(word)
                         print(transcript[start_index:])
                         await predict(transcript[start_index:])
-                        time.sleep(2)
+                        
                 
                 
                 await fast_socket.send_str(transcript)
