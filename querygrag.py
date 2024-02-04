@@ -27,7 +27,7 @@ GOOGLE_API_KEY='AIzaSyCvtMa0OoR0OZclO0uC87IV_TlxBkoSv6A'
 #from langchain.embeddings import HuggingFaceEmbeddings, SentenceTransformerEmbeddings
 # Supplying a persist_directory will store the embeddings on disk
 def ret():
-    persist_directory = 'db2'
+    persist_directory = 'db1'
     embedding = GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key=GOOGLE_API_KEY)
     vectordb = Chroma(persist_directory=persist_directory, 
                   embedding_function=embedding)
@@ -48,10 +48,12 @@ def ret():
 # Now we can load the persisted database from disk, and use it as normal. 
 
 
-
+"""
 retriever=ret()
+print("query rag testing")
+print()
 docs = retriever.get_relevant_documents("What is Security Incident Response")
-print(docs)
+print(docs)"""
 
 
 

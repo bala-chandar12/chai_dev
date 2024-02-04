@@ -14,11 +14,50 @@ from langchain_google_genai import ChatGoogleGenerativeAI,GoogleGenerativeAIEmbe
 from langchain_community.vectorstores import Chroma
 warnings.filterwarnings("ignore")
 from querygrag import ret
+from langchain.chains.question_answering import load_qa_chain
+from langchain_google_genai import ChatGoogleGenerativeAI
+import os
+os.environ['GOOGLE_API_KEY'] = 'AIzaSyCvtMa0OoR0OZclO0uC87IV_TlxBkoSv6A'
 
+prompt_template = """
+  Please answer the question in as much detail as possible based on the provided context.
+  Ensure to include all relevant details. If the answer is not available in the provided context,
+  kindly respond with "The answer is not available in the context." Please avoid providing incorrect answers.
+\n\n
+  Context:\n {context}?\n
+  Question: \n{question}\n
+
+  Answer:
+"""
+
+prompt = PromptTemplate(template = prompt_template, input_variables = ["context", "question"])
+retriver=ret
+
+model = ChatGoogleGenerativeAI(model="gemini-pro",
+                             temperature=0.3)
+chain = load_qa_chain(model, chain_type="stuff", prompt=prompt)
+question = "what is security incident response?"
+docs = ret.get_relevant_documents(question)
+
+
+
+"""
 
 GOOGLE_API_KEY='AIzaSyCvtMa0OoR0OZclO0uC87IV_TlxBkoSv6A'
+model = ChatGoogleGenerativeAI(model="gemini-pro",google_api_key=GOOGLE_API_KEY,
+                             temperature=0.4,convert_system_message_to_human=True)
+vector_index=ret()
+qa_chain = RetrievalQA.from_chain_type(
+    model,
+    retriever=vector_index,
+    return_source_documents=True)
+print("going to prediction")
+k=qa_chain({"query": "what is security incident recident response"})
+print(k["result"])
+print("prediction made")
 
-"""def load_model():
+
+def load_model():
   #Function to load Model
   model = ChatGoogleGenerativeAI(model="gemini-pro",google_api_key=GOOGLE_API_KEY,
                              temperature=0.4,convert_system_message_to_human=True)
@@ -56,7 +95,7 @@ def get_query():
 
 pip freeze > requirements.txt
 
-get_query()"""
+get_query()
 
 def pred(query):
   
@@ -71,8 +110,6 @@ def pred(query):
   print(qa_chain({"query": query})["result"])
 
 
-print("check start")  
-pred("what is security incident response")
-print("check ends")
 
 
+"""

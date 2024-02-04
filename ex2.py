@@ -7,7 +7,7 @@ from aiohttp import web
 from aiohttp_wsgi import WSGIHandler
 
 from typing import Dict, Callable
-from gem import pred
+
 import time
 from langchain.vectorstores import Chroma
 from langchain.embeddings import OpenAIEmbeddings
@@ -31,26 +31,10 @@ from langchain.chains import RetrievalQA
 from langchain_google_genai import ChatGoogleGenerativeAI,GoogleGenerativeAIEmbeddings
 warnings.filterwarnings("ignore")
 #from querygrag import ret
+from model import predict
 
 GOOGLE_API_KEY='AIzaSyCvtMa0OoR0OZclO0uC87IV_TlxBkoSv6A'
-persist_directory = 'db2'
-embedding = GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key=GOOGLE_API_KEY)
-vectordb = Chroma(persist_directory=persist_directory, 
-                  embedding_function=embedding)
-retriever = vectordb.as_retriever()
-query="what is security incident response"
-print("checking pred")
-model = ChatGoogleGenerativeAI(model="gemini-pro",google_api_key=GOOGLE_API_KEY,
-                             temperature=0.4,convert_system_message_to_human=True)
-qa_chain = RetrievalQA.from_chain_type(
-    model,
-    retriever=retriever,
-    return_source_documents=True)
-k=qa_chain({"query": query})["result"]
-print(k)
 
-print()
-print("checked")
 
 load_dotenv()
 
@@ -73,7 +57,7 @@ async def process_audio(fast_socket: web.WebSocketResponse):
                             print("it is a question")
                         start_index = transcript_lower.find(word)
                         print(transcript)
-                        await pred(transcript)
+                        await predict(transcript[start_index:])
                         time.sleep(3)
                 await fast_socket.send_str(transcript)
     deepgram_socket = await connect_to_deepgram(get_transcript)
@@ -95,7 +79,7 @@ async def process_audio2(fast_socket: web.WebSocketResponse):
 
                         start_index = transcript_lower.find(word)
                         print(transcript[start_index:])
-                        await pred(transcript[start_index:])
+                        await predict(transcript[start_index:])
                         time.sleep(2)
                 
                 
