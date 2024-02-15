@@ -10,6 +10,7 @@ os.environ["TOGETHER_API_KEY"] = "bcb47299a331e5736edb40b846e0b6f9654842e1e64fae
 
 
 
+
 # set your API key
 together.api_key = os.environ["TOGETHER_API_KEY"]
 
@@ -137,6 +138,7 @@ async def predict(que):
     memory.clear()
     k=qa.run({"query":que})
     print(k)
+predict("what is security incident response")
 
 
 """

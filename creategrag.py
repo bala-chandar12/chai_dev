@@ -29,7 +29,7 @@ print(texts[3])
 # Embed and store the texts
 #from langchain.embeddings import HuggingFaceEmbeddings, SentenceTransformerEmbeddings
 # Supplying a persist_directory will store the embeddings on disk
-persist_directory = 'db1'
+persist_directory = 'db4'
 
 ## here we are using OpenAI embeddings but in future we will swap out to local embeddings
 #model_name = "intfloat/e5-large-v2"
