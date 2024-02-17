@@ -5,7 +5,7 @@ from langchain.chains import RetrievalQA
 from langchain.document_loaders import TextLoader
 from langchain.document_loaders import DirectoryLoader
 from langchain_google_genai import ChatGoogleGenerativeAI,GoogleGenerativeAIEmbeddings
-
+from model import wrap
 GOOGLE_API_KEY='AIzaSyCvtMa0OoR0OZclO0uC87IV_TlxBkoSv6A'
 
 
@@ -52,6 +52,7 @@ vectordb.persist()
                   embedding_function=embedding)"""
 
 retriever = vectordb.as_retriever()
+wrap(retriever)
 
 docs = retriever.get_relevant_documents("What is Security Incident Response")
 print()
@@ -62,3 +63,16 @@ print(docs)
 
 
 
+def createrag():
+    loader = DirectoryLoader('./document/SIR/', glob="./*.txt", loader_cls=TextLoader)
+    documents = loader.load()
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    texts = text_splitter.split_documents(documents)
+    persist_directory = 'db4'
+    embedding = GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key=GOOGLE_API_KEY)
+    vectordb = Chroma.from_documents(documents=texts, 
+                                 embedding=embedding,
+                                 persist_directory=persist_directory)
+    vectordb.persist()
+    retriever = vectordb.as_retriever()
+    wrap(retriever)

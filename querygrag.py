@@ -27,7 +27,7 @@ GOOGLE_API_KEY='AIzaSyCvtMa0OoR0OZclO0uC87IV_TlxBkoSv6A'
 #from langchain.embeddings import HuggingFaceEmbeddings, SentenceTransformerEmbeddings
 # Supplying a persist_directory will store the embeddings on disk
 def ret():
-    persist_directory = 'db1'
+    persist_directory = 'db5'
     embedding = GoogleGenerativeAIEmbeddings(model="models/embedding-001",google_api_key=GOOGLE_API_KEY)
     vectordb = Chroma(persist_directory=persist_directory, 
                   embedding_function=embedding)

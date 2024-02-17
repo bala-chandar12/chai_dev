@@ -1,10 +1,11 @@
-from flask import Flask, render_template
+from flask import Flask, render_template,request
 from deepgram import Deepgram
 from dotenv import load_dotenv
 import os
 import asyncio
 from aiohttp import web
 from aiohttp_wsgi import WSGIHandler
+from model import createrag
 
 from typing import Dict, Callable
 
@@ -43,6 +44,7 @@ app = Flask('aioflask')
 dg_client = Deepgram("012cec2f6ce37fc99e2e035403ac79e71f95ffe3")
 dg_client2 = Deepgram("27ce970dc1dac23c32c50c3cc01805e12f6d048a")
 question_words = ["who", "what", "when", "where", "why", "how"]
+
 
 async def process_audio(fast_socket: web.WebSocketResponse):
     async def get_transcript(data: Dict) -> None: 
@@ -142,12 +144,20 @@ async def socket3(request):
     while True:
         data = await ws.receive_bytes()
         deepgram_socket.send(data)
+@app.route('/upload', methods=['POST'])
+async def upload(request):
+    if request.method == 'POST':
+        data = await request.json()
+        createrag(data["url"])
+
+    print("hi")
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     aio_app = web.Application()
     wsgi = WSGIHandler(app)
     aio_app.router.add_route('*', '/{path_info: *}', wsgi.handle_request)
+    aio_app.router.add_route('POST', '/upload', upload)
     aio_app.router.add_route('GET', '/listen', socket)
     aio_app.router.add_route('GET', '/listen2', socket2)
     web.run_app(aio_app, port=5555)
